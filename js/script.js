@@ -37,18 +37,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.addEventListener(SAVED_EVENT, function (event){
         const message = event.detail?.message;
-        //kalau pakai swal
-        // Swal.fire({  
-        //   title: 'Berhasil!',
-        //   text: message,
-        //   icon: 'success',
-        //   confirmButtonText: 'Oke'
-        // });
         const dialog = document.getElementById('dialog');
-        const paragraf = dialog.querySelector('p');
-        paragraf.innerText = message;
-        if (!dialog.open) {
-            dialog.showModal();
+        if(isShowModalSupport()){
+            const paragraf = dialog.querySelector('p');
+            paragraf.innerText = message;
+            if (!dialog.open) {
+                dialog.showModal();
+            }
+        }else{
+            Swal.fire({  
+                title: 'Berhasil!',
+                text: message,
+                icon: 'success',
+                confirmButtonText: 'Oke'
+            });
         }
     });
 });
@@ -239,4 +241,11 @@ function textDialog(actionType){
         return "To Do List Berhasil dihapus";
     else if(actionType === "undo")
         return "To Do List Batal Selesai";
+}
+
+function isShowModalSupport(dialog){
+    if (typeof dialog.showModal() === 'function'){
+        return true;
+    }
+    return false;
 }
